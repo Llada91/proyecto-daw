@@ -1,29 +1,88 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Profile') }}
-        </h2>
-    </x-slot>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi perfil — Forja de Mundos</title>
+    @vite(['resources/css/app.css'])
+</head>
+<body>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
+    <div class="panel">
+
+        {{-- =============================================
+             BARRA LATERAL
+        ============================================= --}}
+        <aside class="sidebar">
+
+            <a href="/" class="sidebar-logo">
+                ⚔️ Forja de <span>Mundos</span>
+            </a>
+
+            <nav class="sidebar-nav">
+                <a href="{{ route('dashboard') }}" class="sidebar-enlace">
+                    🏠 Dashboard
+                </a>
+                <a href="#" class="sidebar-enlace">
+                    ⚔️ Mis partidas
+                </a>
+                <a href="#" class="sidebar-enlace">
+                    📜 Mis personajes
+                </a>
+                <a href="{{ route('profile.edit') }}" class="sidebar-enlace activo">
+                    👤 Mi perfil
+                </a>
+            </nav>
+
+            <form action="{{ route('logout') }}" method="POST" class="sidebar-logout">
+                @csrf
+                <button type="submit" class="btn btn-contorno btn-bloque">
+                    Cerrar sesión
+                </button>
+            </form>
+
+        </aside>
+
+
+        {{-- =============================================
+             CONTENIDO PRINCIPAL
+        ============================================= --}}
+        <main class="panel-contenido">
+
+            <div class="dashboard-cabecera">
+                <div>
+                    <h1 class="dashboard-titulo">Mi perfil</h1>
+                    <p class="dashboard-subtitulo">Gestiona tu información personal</p>
+                </div>
+            </div>
+
+            {{-- Sección 1: Información del perfil --}}
+            <div class="perfil-seccion">
+                <h2 class="dashboard-seccion-titulo">Información de la cuenta</h2>
+                <div class="perfil-tarjeta">
                     @include('profile.partials.update-profile-information-form')
                 </div>
             </div>
 
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
+            {{-- Sección 2: Cambiar contraseña --}}
+            <div class="perfil-seccion">
+                <h2 class="dashboard-seccion-titulo">Cambiar contraseña</h2>
+                <div class="perfil-tarjeta">
                     @include('profile.partials.update-password-form')
                 </div>
             </div>
 
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
+            {{-- Sección 3: Eliminar cuenta --}}
+            <div class="perfil-seccion">
+                <h2 class="dashboard-seccion-titulo">Zona de peligro</h2>
+                <div class="perfil-tarjeta perfil-tarjeta-peligro">
                     @include('profile.partials.delete-user-form')
                 </div>
             </div>
-        </div>
-    </div>
-</x-app-layout>
+
+        </main>
+
+    </div>{{-- fin .panel --}}
+
+</body>
+</html>

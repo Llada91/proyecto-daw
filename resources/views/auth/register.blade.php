@@ -1,52 +1,114 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
-        @csrf
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrarse — Forja de Mundos</title>
+    @vite(['resources/css/app.css'])
+</head>
+<body>
 
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
-        </div>
+    <div class="auth-pagina">
+        <div class="auth-tarjeta">
 
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
+            {{-- Logo --}}
+            <a href="/" class="auth-logo">
+                ⚔️ Forja de <span>Mundos</span>
             </a>
 
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
+            {{-- Mensajes de error generales --}}
+            @if ($errors->any())
+                <div class="form-error">
+                    {{ $errors->first() }}
+                </div>
+            @endif
+
+            {{-- Formulario de registro --}}
+            <form method="POST" action="{{ route('register') }}">
+                @csrf
+
+                {{-- Nombre --}}
+                <div class="campo">
+                    <label for="name" class="campo-etiqueta">Nombre de usuario</label>
+                    <input
+                        id="name"
+                        type="text"
+                        name="name"
+                        value="{{ old('name') }}"
+                        class="campo-input"
+                        placeholder="Tu nombre de aventurero"
+                        required
+                        autofocus
+                    >
+                    @error('name')
+                        <span class="campo-error">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                {{-- Email --}}
+                <div class="campo">
+                    <label for="email" class="campo-etiqueta">Correo electrónico</label>
+                    <input
+                        id="email"
+                        type="email"
+                        name="email"
+                        value="{{ old('email') }}"
+                        class="campo-input"
+                        placeholder="tu@correo.com"
+                        required
+                    >
+                    @error('email')
+                        <span class="campo-error">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                {{-- Contraseña --}}
+                <div class="campo">
+                    <label for="password" class="campo-etiqueta">Contraseña</label>
+                    <input
+                        id="password"
+                        type="password"
+                        name="password"
+                        class="campo-input"
+                        placeholder="••••••••"
+                        required
+                    >
+                    @error('password')
+                        <span class="campo-error">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                {{-- Confirmar contraseña --}}
+                <div class="campo">
+                    <label for="password_confirmation" class="campo-etiqueta">Confirmar contraseña</label>
+                    <input
+                        id="password_confirmation"
+                        type="password"
+                        name="password_confirmation"
+                        class="campo-input"
+                        placeholder="••••••••"
+                        required
+                    >
+                    @error('password_confirmation')
+                        <span class="campo-error">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                {{-- Botón enviar --}}
+                <button type="submit" class="btn btn-amarillo btn-bloque">
+                    Crear cuenta
+                </button>
+
+            </form>
+
+            {{-- Enlace al login --}}
+            <p class="auth-pie-texto">
+                ¿Ya tienes cuenta?
+                <a href="{{ route('login') }}">Inicia sesión</a>
+            </p>
+
         </div>
-    </form>
-</x-guest-layout>
+    </div>
+
+</body>
+</html>

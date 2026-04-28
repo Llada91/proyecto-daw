@@ -19,7 +19,6 @@
 
         <nav class="cabecera-nav">
             <a href="#funciones">Funciones</a>
-            <a href="#perfiles">Perfiles</a>
         </nav>
 
         <div class="cabecera-acciones">

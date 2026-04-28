@@ -911,3 +911,11 @@ ul {
     background: rgba(220, 80, 80, 0.1);
     border-color: #e07070;
 }
+
+/* Fila de botones en la zona de peligro */
+.perfil-borrado-acciones {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
