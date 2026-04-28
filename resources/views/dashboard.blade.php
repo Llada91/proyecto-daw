@@ -23,12 +23,10 @@
                 <a href="{{ route('dashboard') }}" class="sidebar-enlace activo">
                     🏠 Dashboard
                 </a>
-                {{-- Enlace temporal hasta crear el controlador de partidas --}}
-                <a href="#" class="sidebar-enlace">
+                <a href="{{ route('partidas.index') }}" class="sidebar-enlace">
                     ⚔️ Mis partidas
                 </a>
-                {{-- Enlace temporal hasta crear el controlador de personajes --}}
-                <a href="#" class="sidebar-enlace">
+                <a href="{{ route('personajes.index') }}" class="sidebar-enlace">
                     📜 Mis personajes
                 </a>
                 <a href="{{ route('profile.edit') }}" class="sidebar-enlace">
@@ -59,10 +57,10 @@
                     <p class="dashboard-subtitulo">¿Listo para la aventura?</p>
                 </div>
 
-                {{-- Acciones rápidas — temporales hasta crear los controladores --}}
+                {{-- Acciones rápidas --}}
                 <div class="dashboard-acciones">
-                    <a href="#" class="btn btn-morado">⚔️ Nueva partida</a>
-                    <a href="#" class="btn btn-contorno">📜 Nuevo personaje</a>
+                    <a href="{{ route('partidas.create') }}"   class="btn btn-morado">⚔️ Nueva partida</a>
+                    <a href="{{ route('personajes.create') }}" class="btn btn-contorno">📜 Nuevo personaje</a>
                 </div>
             </div>
 
@@ -74,8 +72,7 @@
 
                 <div class="grid">
 
-                    {{-- Tarjetas de ejemplo — se reemplazarán con datos reales del backend --}}
-
+                    {{-- Tarjetas de ejemplo --}}
                     <div class="tarjeta">
                         <div class="tarjeta-cabecera">
                             <span class="tarjeta-icono">⚔️</span>
@@ -96,8 +93,8 @@
                         <a href="#" class="btn btn-contorno btn-sm">Entrar</a>
                     </div>
 
-                    {{-- Tarjeta para crear nueva partida — temporal --}}
-                    <a href="#" class="tarjeta tarjeta-nueva">
+                    {{-- Tarjeta para crear nueva partida --}}
+                    <a href="{{ route('partidas.create') }}" class="tarjeta tarjeta-nueva">
                         <span class="tarjeta-nueva-icono">＋</span>
                         <p>Crear nueva partida</p>
                     </a>
@@ -113,8 +110,6 @@
                 <h2 class="dashboard-seccion-titulo">Actividad reciente</h2>
 
                 <div class="actividad-lista">
-
-                    {{-- Actividad de ejemplo — se reemplazará con datos reales del backend --}}
 
                     <div class="actividad-fila">
                         <span class="actividad-icono">🎲</span>

@@ -919,3 +919,108 @@ ul {
     margin-top: 1rem;
     flex-wrap: wrap;
 }
+
+/* Texto cuando no hay partidas */
+.partidas-vacio {
+    color: var(--gris);
+    font-style: italic;
+    font-size: 0.9rem;
+    padding: 1rem 0;
+}
+
+/* Fila de botones dentro de una tarjeta */
+.tarjeta-acciones {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+/* Textarea — igual que el input pero con altura */
+.campo-textarea {
+    height: 120px;
+    resize: vertical;
+}
+
+/* Texto de descripción de la partida */
+.partida-descripcion {
+    color: var(--gris);
+    font-style: italic;
+    line-height: 1.8;
+}
+
+/* Grid de 2 columnas para campos de la ficha */
+.ficha-grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+/* Grid de 3 columnas para las características */
+.ficha-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+/* Input de estadística — texto centrado */
+.campo-stat {
+    text-align: center;
+    font-family: var(--fuente-titulo);
+    font-size: 1.2rem;
+}
+
+/* Dato individual en la ficha — etiqueta + valor */
+.ficha-dato {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--borde);
+}
+
+.ficha-dato-etiqueta {
+    font-family: var(--fuente-titulo);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gris);
+}
+
+.ficha-dato-valor {
+    font-size: 0.95rem;
+    color: var(--blanco);
+}
+
+/* Bloque de estadística — número grande con nombre debajo */
+.ficha-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    background: var(--negro);
+    border: 1px solid var(--borde);
+    border-radius: 6px;
+    padding: 1rem;
+    text-align: center;
+    transition: border-color 0.2s;
+}
+
+.ficha-stat:hover {
+    border-color: var(--morado);
+}
+
+.ficha-stat-valor {
+    font-family: var(--fuente-titulo);
+    font-size: 2rem;
+    color: var(--blanco);
+    line-height: 1;
+}
+
+.ficha-stat-nombre {
+    font-size: 0.72rem;
+    color: var(--gris);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
