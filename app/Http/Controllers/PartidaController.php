@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Partida;
+use App\Models\Personaje;
 use Illuminate\Http\Request;
 
 class PartidaController extends Controller
@@ -31,11 +32,9 @@ class PartidaController extends Controller
         $request->validate([
             'nombre'      => 'required|max:255',
             'descripcion' => 'nullable',
-            // image valida que sea una imagen, max 2MB
             'imagen'      => 'nullable|image|max:2048',
         ]);
 
-        // Si se subió una imagen la guardamos en storage/app/public/partidas
         $rutaImagen = null;
         if ($request->hasFile('imagen')) {
             $rutaImagen = $request->file('imagen')->store('partidas', 'public');
@@ -80,9 +79,7 @@ class PartidaController extends Controller
             'imagen'      => 'nullable|image|max:2048',
         ]);
 
-        // Si se subió una imagen nueva la guardamos y borramos la anterior
         if ($request->hasFile('imagen')) {
-            // Borramos la imagen anterior si existía
             if ($partida->imagen) {
                 \Storage::disk('public')->delete($partida->imagen);
             }
@@ -103,7 +100,6 @@ class PartidaController extends Controller
             return redirect()->route('partidas.index');
         }
 
-        // Borramos la imagen si existía
         if ($partida->imagen) {
             \Storage::disk('public')->delete($partida->imagen);
         }
@@ -111,5 +107,49 @@ class PartidaController extends Controller
         $partida->delete();
 
         return redirect()->route('partidas.index');
+    }
+
+    // Muestra el listado de personajes disponibles para invitar
+    public function invitar(Partida $partida)
+    {
+        // Solo el director puede invitar
+        if (auth()->id() !== $partida->creador_id) {
+            return redirect()->route('partidas.show', $partida);
+        }
+
+        // Personajes que NO están ya en la partida
+        $personajesDisponibles = Personaje::whereNotIn(
+            'id',
+            $partida->personajes->pluck('id')
+        )->get();
+
+        return view('partidas.invitar', compact('partida', 'personajesDisponibles'));
+    }
+
+    // Añade el personaje a la partida
+    public function agregarPersonaje(Request $request, Partida $partida)
+    {
+        // Solo el director puede invitar
+        if (auth()->id() !== $partida->creador_id) {
+            return redirect()->route('partidas.show', $partida);
+        }
+
+        // Añadimos el personaje a la tabla incluir_personaje
+        $partida->personajes()->attach($request->personaje_id);
+
+        return redirect()->route('partidas.show', $partida);
+    }
+
+    // Quita el personaje de la partida
+    public function quitarPersonaje(Request $request, Partida $partida)
+    {
+        if (auth()->id() !== $partida->creador_id) {
+            return redirect()->route('partidas.show', $partida);
+        }
+
+        // Eliminamos el personaje de la tabla incluir_personaje
+        $partida->personajes()->detach($request->personaje_id);
+
+        return redirect()->route('partidas.invitar', $partida);
     }
 }

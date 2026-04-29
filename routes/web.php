@@ -27,10 +27,19 @@ Route::middleware('auth')->group(function () {
     // Genera: index, create, store, show, edit, update, destroy
     Route::resource('partidas', PartidaController::class);
 
+    // Rutas de partidas
+    Route::resource('partidas', PartidaController::class);
+
+    // Invitar personajes a una partida
+    Route::get('partidas/{partida}/invitar',  [PartidaController::class, 'invitar'])->name('partidas.invitar');
+    Route::post('partidas/{partida}/invitar', [PartidaController::class, 'agregarPersonaje'])->name('partidas.agregarPersonaje');
+
     // Rutas de personajes
     // Genera: index, create, store, show, edit, update, destroy
     Route::resource('personajes', PersonajeController::class);
 
+    Route::delete('partidas/{partida}/invitar', [PartidaController::class, 'quitarPersonaje'])
+        ->name('partidas.quitarPersonaje');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

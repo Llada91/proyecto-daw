@@ -10,6 +10,7 @@ class Partida extends Model
     protected $fillable = [
         'nombre',
         'descripcion',
+        'imagen',
         'creador_id',
     ];
 

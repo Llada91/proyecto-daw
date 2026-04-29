@@ -64,9 +64,13 @@
                     </p>
                 </div>
 
-                {{-- Solo el director ve los botones de editar y eliminar --}}
+                {{-- Solo el director ve los botones --}}
                 @if (auth()->id() === $partida->creador_id)
                     <div class="dashboard-acciones">
+                        {{-- Botón para invitar personajes --}}
+                        <a href="{{ route('partidas.invitar', $partida) }}" class="btn btn-amarillo">
+                            ➕ Invitar personajes
+                        </a>
                         <a href="{{ route('partidas.edit', $partida) }}" class="btn btn-contorno">
                             Editar partida
                         </a>

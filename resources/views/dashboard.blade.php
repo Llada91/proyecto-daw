@@ -66,118 +66,92 @@
 
 
             {{-- ---- MIS PARTIDAS ---- --}}
-            <section class="dashboard-seccion">
+<section class="dashboard-seccion">
 
-                <h2 class="dashboard-seccion-titulo">Mis partidas</h2>
+    <h2 class="dashboard-seccion-titulo">Mis partidas</h2>
 
-                <div class="grid">
+    <div class="grid">
 
-                    {{-- Partidas como director --}}
-                    @foreach ($partidasComoDirector as $partida)
-                        <div class="tarjeta">
-                            @if ($partida->imagen)
-                                <img src="{{ asset('storage/' . $partida->imagen) }}" class="tarjeta-imagen">
-                            @else
-                                <div class="tarjeta-imagen-placeholder">⚔️</div>
-                            @endif
-                            <div class="tarjeta-cabecera">
-                                <span class="etiqueta etiqueta-director">Director</span>
-                            </div>
-                            <h3 class="tarjeta-titulo">{{ $partida->nombre }}</h3>
-                            <p class="tarjeta-texto">
-                                {{ $partida->personajes->count() }} jugadores ·
-                                {{ $partida->created_at->diffForHumans() }}
-                            </p>
-                            <a href="{{ route('partidas.show', $partida) }}" class="btn btn-morado btn-sm">
-                                Entrar
-                            </a>
-                        </div>
-                    @endforeach
-
-                    {{-- Partidas como jugador --}}
-                    @foreach ($partidasComoJugador as $partida)
-                        <div class="tarjeta">
-                            @if ($partida->imagen)
-                                <img src="{{ asset('storage/' . $partida->imagen) }}" class="tarjeta-imagen">
-                            @else
-                                <div class="tarjeta-imagen-placeholder">🛡️</div>
-                            @endif
-                            <div class="tarjeta-cabecera">
-                                <span class="etiqueta etiqueta-jugador">Jugador</span>
-                            </div>
-                            <h3 class="tarjeta-titulo">{{ $partida->nombre }}</h3>
-                            <p class="tarjeta-texto">
-                                Director: {{ $partida->creador->name }} ·
-                                {{ $partida->personajes->count() }} jugadores
-                            </p>
-                            <a href="{{ route('partidas.show', $partida) }}" class="btn btn-contorno btn-sm">
-                                Entrar
-                            </a>
-                        </div>
-                    @endforeach
-
-                    {{-- Si no hay ninguna partida --}}
-                    @if ($partidasComoDirector->isEmpty() && $partidasComoJugador->isEmpty())
-                        <p class="partidas-vacio">No tienes ninguna partida todavía.</p>
+        @foreach ($ultimasPartidas as $partida)
+            <div class="tarjeta">
+                @if ($partida->imagen)
+                    <img src="{{ asset('storage/' . $partida->imagen) }}" class="tarjeta-imagen">
+                @else
+                    <div class="tarjeta-imagen-placeholder">
+                        {{ $partida->creador_id === auth()->id() ? '⚔️' : '🛡️' }}
+                    </div>
+                @endif
+                <div class="tarjeta-cabecera">
+                    @if ($partida->creador_id === auth()->id())
+                        <span class="etiqueta etiqueta-director">Director</span>
+                    @else
+                        <span class="etiqueta etiqueta-jugador">Jugador</span>
                     @endif
+                </div>
+                <h3 class="tarjeta-titulo">{{ $partida->nombre }}</h3>
+                <p class="tarjeta-texto">
+                    {{ $partida->personajes->count() }} jugadores ·
+                    {{ $partida->created_at->diffForHumans() }}
+                </p>
+                <a href="{{ route('partidas.show', $partida) }}" class="btn btn-morado btn-sm">
+                    Entrar
+                </a>
+            </div>
+        @endforeach
 
-                    {{-- Tarjeta para crear nueva partida --}}
-                    <a href="{{ route('partidas.create') }}" class="tarjeta tarjeta-nueva">
-                        <span class="tarjeta-nueva-icono">＋</span>
-                        <p>Crear nueva partida</p>
-                    </a>
+        {{-- Siempre a la derecha: crear nueva partida --}}
+        <a href="{{ route('partidas.create') }}" class="tarjeta tarjeta-nueva">
+            <span class="tarjeta-nueva-icono">＋</span>
+            <p>Crear nueva partida</p>
+        </a>
+
+    </div>
+
+</section>
+
+
+{{-- ---- ACTIVIDAD RECIENTE ---- --}}
+<section class="dashboard-seccion">
+
+    <h2 class="dashboard-seccion-titulo">Actividad reciente</h2>
+
+    <div class="actividad-lista">
+
+        @if ($actividad->isEmpty())
+            <p class="partidas-vacio">No hay actividad reciente todavía.</p>
+        @else
+            @foreach ($actividad as $elemento)
+                <div class="actividad-fila">
+
+                    {{-- Icono según el tipo --}}
+                    <span class="actividad-icono">
+                        {{ $elemento->tipo_actividad === 'partida' ? '⚔️' : '📜' }}
+                    </span>
+
+                    <div class="actividad-info">
+                        @if ($elemento->tipo_actividad === 'partida')
+                            <p class="actividad-texto">
+                                @if ($elemento->creador_id === auth()->id())
+                                    Partida <strong>{{ $elemento->nombre }}</strong> creada
+                                @else
+                                    Te uniste a la partida <strong>{{ $elemento->nombre }}</strong>
+                                @endif
+                            </p>
+                        @else
+                            <p class="actividad-texto">
+                                Personaje <strong>{{ $elemento->datos['nombre'] ?? 'Sin nombre' }}</strong> creado
+                            </p>
+                        @endif
+                        <p class="actividad-fecha">{{ $elemento->created_at->diffForHumans() }}</p>
+                    </div>
 
                 </div>
+            @endforeach
+        @endif
 
-            </section>
+    </div>
 
-
-            {{-- ---- ACTIVIDAD RECIENTE ---- --}}
-            {{-- Por ahora muestra las últimas partidas y personajes creados --}}
-            <section class="dashboard-seccion">
-
-                <h2 class="dashboard-seccion-titulo">Actividad reciente</h2>
-
-                <div class="actividad-lista">
-
-                    {{-- Últimas partidas creadas --}}
-                    @forelse ($partidasComoDirector as $partida)
-                        <div class="actividad-fila">
-                            <span class="actividad-icono">⚔️</span>
-                            <div class="actividad-info">
-                                <p class="actividad-texto">
-                                    Partida <strong>{{ $partida->nombre }}</strong> creada
-                                </p>
-                                <p class="actividad-fecha">{{ $partida->created_at->diffForHumans() }}</p>
-                            </div>
-                        </div>
-                    @empty
-                        {{-- No mostramos nada si no hay partidas --}}
-                    @endforelse
-
-                    {{-- Últimos personajes creados --}}
-                    @forelse ($personajes as $personaje)
-                        <div class="actividad-fila">
-                            <span class="actividad-icono">📜</span>
-                            <div class="actividad-info">
-                                <p class="actividad-texto">
-                                    Personaje <strong>{{ $personaje->datos['nombre'] ?? 'Sin nombre' }}</strong> creado
-                                </p>
-                                <p class="actividad-fecha">{{ $personaje->created_at->diffForHumans() }}</p>
-                            </div>
-                        </div>
-                    @empty
-                        {{-- No mostramos nada si no hay personajes --}}
-                    @endforelse
-
-                    {{-- Si no hay nada que mostrar --}}
-                    @if ($partidasComoDirector->isEmpty() && $personajes->isEmpty())
-                        <p class="partidas-vacio">No hay actividad reciente todavía.</p>
-                    @endif
-
-                </div>
-
-            </section>
+</section>
 
         </main>
 
