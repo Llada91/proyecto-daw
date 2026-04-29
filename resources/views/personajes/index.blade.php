@@ -72,12 +72,20 @@
                     <div class="grid">
                         @foreach ($personajes as $personaje)
                             <div class="tarjeta">
+
+                                {{-- Imagen del personaje si existe, si no un placeholder --}}
+                                @if ($personaje->imagen)
+                                    <img src="{{ asset('storage/' . $personaje->imagen) }}" class="tarjeta-imagen">
+                                @else
+                                    <div class="tarjeta-imagen-placeholder">🧙</div>
+                                @endif
+
                                 <div class="tarjeta-cabecera">
-                                    <span class="tarjeta-icono">🧙</span>
                                     <span class="etiqueta etiqueta-jugador">
                                         {{ $personaje->datos['clase'] ?? 'Sin clase' }}
                                     </span>
                                 </div>
+
                                 <h3 class="tarjeta-titulo">
                                     {{ $personaje->datos['nombre'] ?? 'Sin nombre' }}
                                 </h3>

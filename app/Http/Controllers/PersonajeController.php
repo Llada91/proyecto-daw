@@ -10,7 +10,6 @@ class PersonajeController extends Controller
     // Muestra la lista de personajes del usuario
     public function index()
     {
-        // Solo los personajes del usuario autenticado
         $personajes = Personaje::where('usuario_id', auth()->id())->get();
 
         return view('personajes.index', compact('personajes'));
@@ -25,16 +24,22 @@ class PersonajeController extends Controller
     // Guarda el nuevo personaje en la base de datos
     public function store(Request $request)
     {
-        // Validamos que el JSON de datos no esté vacío
         $request->validate([
-            'datos' => 'required|array',
+            'datos'        => 'required|array',
             'datos.nombre' => 'required|max:255',
+            'imagen'       => 'nullable|image|max:2048',
         ]);
 
-        // Creamos el personaje con el usuario actual como dueño
+        // Si se subió una imagen la guardamos en storage/app/public/personajes
+        $rutaImagen = null;
+        if ($request->hasFile('imagen')) {
+            $rutaImagen = $request->file('imagen')->store('personajes', 'public');
+        }
+
         Personaje::create([
             'usuario_id' => auth()->id(),
             'datos'      => $request->datos,
+            'imagen'     => $rutaImagen,
         ]);
 
         return redirect()->route('personajes.index');
@@ -43,7 +48,6 @@ class PersonajeController extends Controller
     // Muestra el detalle de un personaje
     public function show(Personaje $personaje)
     {
-        // Solo el dueño puede ver su personaje
         if (auth()->id() !== $personaje->usuario_id) {
             return redirect()->route('personajes.index');
         }
@@ -54,7 +58,6 @@ class PersonajeController extends Controller
     // Muestra el formulario para editar un personaje
     public function edit(Personaje $personaje)
     {
-        // Solo el dueño puede editar su personaje
         if (auth()->id() !== $personaje->usuario_id) {
             return redirect()->route('personajes.index');
         }
@@ -65,19 +68,26 @@ class PersonajeController extends Controller
     // Guarda los cambios del personaje
     public function update(Request $request, Personaje $personaje)
     {
-        // Solo el dueño puede editar su personaje
         if (auth()->id() !== $personaje->usuario_id) {
             return redirect()->route('personajes.index');
         }
 
         $request->validate([
-            'datos' => 'required|array',
+            'datos'        => 'required|array',
             'datos.nombre' => 'required|max:255',
+            'imagen'       => 'nullable|image|max:2048',
         ]);
 
-        $personaje->update([
-            'datos' => $request->datos,
-        ]);
+        // Si se subió una imagen nueva la guardamos y borramos la anterior
+        if ($request->hasFile('imagen')) {
+            if ($personaje->imagen) {
+                \Storage::disk('public')->delete($personaje->imagen);
+            }
+            $personaje->imagen = $request->file('imagen')->store('personajes', 'public');
+        }
+
+        $personaje->datos = $request->datos;
+        $personaje->save();
 
         return redirect()->route('personajes.index');
     }
@@ -85,9 +95,13 @@ class PersonajeController extends Controller
     // Elimina un personaje
     public function destroy(Personaje $personaje)
     {
-        // Solo el dueño puede eliminar su personaje
         if (auth()->id() !== $personaje->usuario_id) {
             return redirect()->route('personajes.index');
+        }
+
+        // Borramos la imagen si existía
+        if ($personaje->imagen) {
+            \Storage::disk('public')->delete($personaje->imagen);
         }
 
         $personaje->delete();

@@ -67,14 +67,20 @@
                 <h2 class="dashboard-seccion-titulo">Como director</h2>
 
                 @if ($partidasComoDirector->isEmpty())
-                    {{-- Mensaje si no hay partidas --}}
                     <p class="partidas-vacio">No has creado ninguna partida todavía.</p>
                 @else
                     <div class="grid">
                         @foreach ($partidasComoDirector as $partida)
                             <div class="tarjeta">
+
+                                {{-- Imagen de portada si existe, si no un placeholder --}}
+                                @if ($partida->imagen)
+                                    <img src="{{ asset('storage/' . $partida->imagen) }}" class="tarjeta-imagen">
+                                @else
+                                    <div class="tarjeta-imagen-placeholder">⚔️</div>
+                                @endif
+
                                 <div class="tarjeta-cabecera">
-                                    <span class="tarjeta-icono">⚔️</span>
                                     <span class="etiqueta etiqueta-director">Director</span>
                                 </div>
                                 <h3 class="tarjeta-titulo">{{ $partida->nombre }}</h3>
@@ -90,7 +96,6 @@
                                     <a href="{{ route('partidas.edit', $partida) }}" class="btn btn-contorno btn-sm">
                                         Editar
                                     </a>
-                                    {{-- Formulario para eliminar la partida --}}
                                     <form action="{{ route('partidas.destroy', $partida) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
@@ -125,8 +130,15 @@
                     <div class="grid">
                         @foreach ($partidasComoJugador as $partida)
                             <div class="tarjeta">
+
+                                {{-- Imagen de portada si existe, si no un placeholder --}}
+                                @if ($partida->imagen)
+                                    <img src="{{ asset('storage/' . $partida->imagen) }}" class="tarjeta-imagen">
+                                @else
+                                    <div class="tarjeta-imagen-placeholder">🛡️</div>
+                                @endif
+
                                 <div class="tarjeta-cabecera">
-                                    <span class="tarjeta-icono">🛡️</span>
                                     <span class="etiqueta etiqueta-jugador">Jugador</span>
                                 </div>
                                 <h3 class="tarjeta-titulo">{{ $partida->nombre }}</h3>

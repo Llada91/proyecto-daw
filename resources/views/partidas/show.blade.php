@@ -49,6 +49,11 @@
         ============================================= --}}
         <main class="panel-contenido">
 
+            {{-- Imagen de portada grande si existe --}}
+            @if ($partida->imagen)
+                <img src="{{ asset('storage/' . $partida->imagen) }}" class="show-imagen">
+            @endif
+
             {{-- Cabecera con nombre y acciones --}}
             <div class="dashboard-cabecera">
                 <div>
@@ -101,8 +106,15 @@
                     <div class="grid">
                         @foreach ($partida->personajes as $personaje)
                             <div class="tarjeta">
+
+                                {{-- Imagen del personaje si existe --}}
+                                @if ($personaje->imagen)
+                                    <img src="{{ asset('storage/' . $personaje->imagen) }}" class="tarjeta-imagen">
+                                @else
+                                    <div class="tarjeta-imagen-placeholder">🧙</div>
+                                @endif
+
                                 <div class="tarjeta-cabecera">
-                                    <span class="tarjeta-icono">🧙</span>
                                     <span class="etiqueta etiqueta-jugador">
                                         {{ $personaje->datos['clase'] ?? 'Sin clase' }}
                                     </span>

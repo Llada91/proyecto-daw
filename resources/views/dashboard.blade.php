@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard — Plataforma de Rol Online</title>
+    <title>Dashboard — Forja de Mundos</title>
     @vite(['resources/css/app.css'])
 </head>
 <body>
@@ -72,26 +72,54 @@
 
                 <div class="grid">
 
-                    {{-- Tarjetas de ejemplo --}}
-                    <div class="tarjeta">
-                        <div class="tarjeta-cabecera">
-                            <span class="tarjeta-icono">⚔️</span>
-                            <span class="etiqueta etiqueta-director">Director</span>
+                    {{-- Partidas como director --}}
+                    @foreach ($partidasComoDirector as $partida)
+                        <div class="tarjeta">
+                            @if ($partida->imagen)
+                                <img src="{{ asset('storage/' . $partida->imagen) }}" class="tarjeta-imagen">
+                            @else
+                                <div class="tarjeta-imagen-placeholder">⚔️</div>
+                            @endif
+                            <div class="tarjeta-cabecera">
+                                <span class="etiqueta etiqueta-director">Director</span>
+                            </div>
+                            <h3 class="tarjeta-titulo">{{ $partida->nombre }}</h3>
+                            <p class="tarjeta-texto">
+                                {{ $partida->personajes->count() }} jugadores ·
+                                {{ $partida->created_at->diffForHumans() }}
+                            </p>
+                            <a href="{{ route('partidas.show', $partida) }}" class="btn btn-morado btn-sm">
+                                Entrar
+                            </a>
                         </div>
-                        <h3 class="tarjeta-titulo">La Mina Perdida</h3>
-                        <p class="tarjeta-texto">3 jugadores · Última sesión hace 2 días</p>
-                        <a href="#" class="btn btn-morado btn-sm">Entrar</a>
-                    </div>
+                    @endforeach
 
-                    <div class="tarjeta">
-                        <div class="tarjeta-cabecera">
-                            <span class="tarjeta-icono">🛡️</span>
-                            <span class="etiqueta etiqueta-jugador">Jugador</span>
+                    {{-- Partidas como jugador --}}
+                    @foreach ($partidasComoJugador as $partida)
+                        <div class="tarjeta">
+                            @if ($partida->imagen)
+                                <img src="{{ asset('storage/' . $partida->imagen) }}" class="tarjeta-imagen">
+                            @else
+                                <div class="tarjeta-imagen-placeholder">🛡️</div>
+                            @endif
+                            <div class="tarjeta-cabecera">
+                                <span class="etiqueta etiqueta-jugador">Jugador</span>
+                            </div>
+                            <h3 class="tarjeta-titulo">{{ $partida->nombre }}</h3>
+                            <p class="tarjeta-texto">
+                                Director: {{ $partida->creador->name }} ·
+                                {{ $partida->personajes->count() }} jugadores
+                            </p>
+                            <a href="{{ route('partidas.show', $partida) }}" class="btn btn-contorno btn-sm">
+                                Entrar
+                            </a>
                         </div>
-                        <h3 class="tarjeta-titulo">El Señor de las Sombras</h3>
-                        <p class="tarjeta-texto">5 jugadores · Última sesión hace 5 días</p>
-                        <a href="#" class="btn btn-contorno btn-sm">Entrar</a>
-                    </div>
+                    @endforeach
+
+                    {{-- Si no hay ninguna partida --}}
+                    @if ($partidasComoDirector->isEmpty() && $partidasComoJugador->isEmpty())
+                        <p class="partidas-vacio">No tienes ninguna partida todavía.</p>
+                    @endif
 
                     {{-- Tarjeta para crear nueva partida --}}
                     <a href="{{ route('partidas.create') }}" class="tarjeta tarjeta-nueva">
@@ -105,43 +133,47 @@
 
 
             {{-- ---- ACTIVIDAD RECIENTE ---- --}}
+            {{-- Por ahora muestra las últimas partidas y personajes creados --}}
             <section class="dashboard-seccion">
 
                 <h2 class="dashboard-seccion-titulo">Actividad reciente</h2>
 
                 <div class="actividad-lista">
 
-                    <div class="actividad-fila">
-                        <span class="actividad-icono">🎲</span>
-                        <div class="actividad-info">
-                            <p class="actividad-texto">Tiraste 1d20 — resultado: <strong>18</strong></p>
-                            <p class="actividad-fecha">Hace 10 minutos · La Mina Perdida</p>
+                    {{-- Últimas partidas creadas --}}
+                    @forelse ($partidasComoDirector as $partida)
+                        <div class="actividad-fila">
+                            <span class="actividad-icono">⚔️</span>
+                            <div class="actividad-info">
+                                <p class="actividad-texto">
+                                    Partida <strong>{{ $partida->nombre }}</strong> creada
+                                </p>
+                                <p class="actividad-fecha">{{ $partida->created_at->diffForHumans() }}</p>
+                            </div>
                         </div>
-                    </div>
+                    @empty
+                        {{-- No mostramos nada si no hay partidas --}}
+                    @endforelse
 
-                    <div class="actividad-fila">
-                        <span class="actividad-icono">⚔️</span>
-                        <div class="actividad-info">
-                            <p class="actividad-texto">Sesión iniciada en <strong>La Mina Perdida</strong></p>
-                            <p class="actividad-fecha">Hace 2 días</p>
+                    {{-- Últimos personajes creados --}}
+                    @forelse ($personajes as $personaje)
+                        <div class="actividad-fila">
+                            <span class="actividad-icono">📜</span>
+                            <div class="actividad-info">
+                                <p class="actividad-texto">
+                                    Personaje <strong>{{ $personaje->datos['nombre'] ?? 'Sin nombre' }}</strong> creado
+                                </p>
+                                <p class="actividad-fecha">{{ $personaje->created_at->diffForHumans() }}</p>
+                            </div>
                         </div>
-                    </div>
+                    @empty
+                        {{-- No mostramos nada si no hay personajes --}}
+                    @endforelse
 
-                    <div class="actividad-fila">
-                        <span class="actividad-icono">📜</span>
-                        <div class="actividad-info">
-                            <p class="actividad-texto">Personaje <strong>Thorn el Gris</strong> actualizado</p>
-                            <p class="actividad-fecha">Hace 3 días</p>
-                        </div>
-                    </div>
-
-                    <div class="actividad-fila">
-                        <span class="actividad-icono">🛡️</span>
-                        <div class="actividad-info">
-                            <p class="actividad-texto">Te uniste a <strong>El Señor de las Sombras</strong></p>
-                            <p class="actividad-fecha">Hace 5 días</p>
-                        </div>
-                    </div>
+                    {{-- Si no hay nada que mostrar --}}
+                    @if ($partidasComoDirector->isEmpty() && $personajes->isEmpty())
+                        <p class="partidas-vacio">No hay actividad reciente todavía.</p>
+                    @endif
 
                 </div>
 

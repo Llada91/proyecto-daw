@@ -10,9 +10,7 @@
 
     <div class="panel">
 
-        {{-- =============================================
-             BARRA LATERAL
-        ============================================= --}}
+        {{-- BARRA LATERAL --}}
         <aside class="sidebar">
 
             <a href="/" class="sidebar-logo">
@@ -44,9 +42,7 @@
         </aside>
 
 
-        {{-- =============================================
-             CONTENIDO PRINCIPAL
-        ============================================= --}}
+        {{-- CONTENIDO PRINCIPAL --}}
         <main class="panel-contenido">
 
             <div class="dashboard-cabecera">
@@ -63,7 +59,8 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('personajes.store') }}">
+            {{-- enctype necesario para subir imágenes --}}
+            <form method="POST" action="{{ route('personajes.store') }}" enctype="multipart/form-data">
                 @csrf
 
                 {{-- ---- INFORMACIÓN BÁSICA ---- --}}
@@ -171,6 +168,21 @@
                             >{{ old('datos.descripcion') }}</textarea>
                         </div>
 
+                        {{-- Imagen del personaje --}}
+                        <div class="campo">
+                            <label for="imagen" class="campo-etiqueta">Imagen del personaje</label>
+                            <input
+                                id="imagen"
+                                type="file"
+                                name="imagen"
+                                class="campo-input campo-file"
+                                accept="image/*"
+                            >
+                            @error('imagen')
+                                <span class="campo-error">{{ $message }}</span>
+                            @enderror
+                        </div>
+
                     </div>
                 </div>
 
@@ -184,74 +196,44 @@
 
                             <div class="campo">
                                 <label for="fuerza" class="campo-etiqueta">Fuerza</label>
-                                <input
-                                    id="fuerza"
-                                    type="number"
-                                    name="datos[fuerza]"
+                                <input id="fuerza" type="number" name="datos[fuerza]"
                                     value="{{ old('datos.fuerza', 10) }}"
-                                    class="campo-input campo-stat"
-                                    min="1" max="20"
-                                >
+                                    class="campo-input campo-stat" min="1" max="20">
                             </div>
 
                             <div class="campo">
                                 <label for="destreza" class="campo-etiqueta">Destreza</label>
-                                <input
-                                    id="destreza"
-                                    type="number"
-                                    name="datos[destreza]"
+                                <input id="destreza" type="number" name="datos[destreza]"
                                     value="{{ old('datos.destreza', 10) }}"
-                                    class="campo-input campo-stat"
-                                    min="1" max="20"
-                                >
+                                    class="campo-input campo-stat" min="1" max="20">
                             </div>
 
                             <div class="campo">
                                 <label for="constitucion" class="campo-etiqueta">Constitución</label>
-                                <input
-                                    id="constitucion"
-                                    type="number"
-                                    name="datos[constitucion]"
+                                <input id="constitucion" type="number" name="datos[constitucion]"
                                     value="{{ old('datos.constitucion', 10) }}"
-                                    class="campo-input campo-stat"
-                                    min="1" max="20"
-                                >
+                                    class="campo-input campo-stat" min="1" max="20">
                             </div>
 
                             <div class="campo">
                                 <label for="inteligencia" class="campo-etiqueta">Inteligencia</label>
-                                <input
-                                    id="inteligencia"
-                                    type="number"
-                                    name="datos[inteligencia]"
+                                <input id="inteligencia" type="number" name="datos[inteligencia]"
                                     value="{{ old('datos.inteligencia', 10) }}"
-                                    class="campo-input campo-stat"
-                                    min="1" max="20"
-                                >
+                                    class="campo-input campo-stat" min="1" max="20">
                             </div>
 
                             <div class="campo">
                                 <label for="sabiduria" class="campo-etiqueta">Sabiduría</label>
-                                <input
-                                    id="sabiduria"
-                                    type="number"
-                                    name="datos[sabiduria]"
+                                <input id="sabiduria" type="number" name="datos[sabiduria]"
                                     value="{{ old('datos.sabiduria', 10) }}"
-                                    class="campo-input campo-stat"
-                                    min="1" max="20"
-                                >
+                                    class="campo-input campo-stat" min="1" max="20">
                             </div>
 
                             <div class="campo">
                                 <label for="carisma" class="campo-etiqueta">Carisma</label>
-                                <input
-                                    id="carisma"
-                                    type="number"
-                                    name="datos[carisma]"
+                                <input id="carisma" type="number" name="datos[carisma]"
                                     value="{{ old('datos.carisma', 10) }}"
-                                    class="campo-input campo-stat"
-                                    min="1" max="20"
-                                >
+                                    class="campo-input campo-stat" min="1" max="20">
                             </div>
 
                         </div>
@@ -273,7 +255,7 @@
 
         </main>
 
-    </div>{{-- fin .panel --}}
+    </div>
 
 </body>
 </html>

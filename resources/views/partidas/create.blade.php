@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nueva partida — Forja de Mundos</title>
     @vite(['resources/css/app.css'])
 </head>
+
 <body>
 
     <div class="panel">
@@ -61,13 +63,13 @@
 
                     {{-- Mensajes de error --}}
                     @if ($errors->any())
-                        <div class="form-error">
-                            {{ $errors->first() }}
-                        </div>
+                    <div class="form-error">
+                        {{ $errors->first() }}
+                    </div>
                     @endif
 
                     {{-- Formulario de crear partida --}}
-                    <form method="POST" action="{{ route('partidas.store') }}">
+                    <form method="POST" action="{{ route('partidas.store') }}" enctype="multipart/form-data">
                         @csrf
 
                         {{-- Nombre --}}
@@ -81,10 +83,9 @@
                                 class="campo-input"
                                 placeholder="La Mina Perdida..."
                                 required
-                                autofocus
-                            >
+                                autofocus>
                             @error('nombre')
-                                <span class="campo-error">{{ $message }}</span>
+                            <span class="campo-error">{{ $message }}</span>
                             @enderror
                         </div>
 
@@ -95,12 +96,26 @@
                                 id="descripcion"
                                 name="descripcion"
                                 class="campo-input campo-textarea"
-                                placeholder="Describe de qué trata la partida..."
-                            >{{ old('descripcion') }}</textarea>
+                                placeholder="Describe de qué trata la partida...">{{ old('descripcion') }}</textarea>
                             @error('descripcion')
-                                <span class="campo-error">{{ $message }}</span>
+                            <span class="campo-error">{{ $message }}</span>
                             @enderror
                         </div>
+
+                        {{-- Imagen de portada --}}
+<div class="campo">
+    <label for="imagen" class="campo-etiqueta">Imagen de portada</label>
+    <input
+        id="imagen"
+        type="file"
+        name="imagen"
+        class="campo-input campo-file"
+        accept="image/*"
+    >
+    @error('imagen')
+        <span class="campo-error">{{ $message }}</span>
+    @enderror
+</div>
 
                         {{-- Botones --}}
                         <div class="tarjeta-acciones">
@@ -122,4 +137,5 @@
     </div>{{-- fin .panel --}}
 
 </body>
+
 </html>

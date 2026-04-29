@@ -10,6 +10,7 @@ class Personaje extends Model
     protected $fillable = [
         'usuario_id',
         'datos',
+        'imagen',
     ];
 
     // Le decimos a Laravel que el campo datos es un JSON

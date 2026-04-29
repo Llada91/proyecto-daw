@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar partida — Forja de Mundos</title>
     @vite(['resources/css/app.css'])
 </head>
+
 <body>
 
     <div class="panel">
@@ -61,13 +63,13 @@
 
                     {{-- Mensajes de error --}}
                     @if ($errors->any())
-                        <div class="form-error">
-                            {{ $errors->first() }}
-                        </div>
+                    <div class="form-error">
+                        {{ $errors->first() }}
+                    </div>
                     @endif
 
                     {{-- Formulario de editar partida --}}
-                    <form method="POST" action="{{ route('partidas.update', $partida) }}">
+                    <form method="POST" action="{{ route('partidas.update', $partida) }}" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
 
@@ -81,10 +83,9 @@
                                 value="{{ old('nombre', $partida->nombre) }}"
                                 class="campo-input"
                                 required
-                                autofocus
-                            >
+                                autofocus>
                             @error('nombre')
-                                <span class="campo-error">{{ $message }}</span>
+                            <span class="campo-error">{{ $message }}</span>
                             @enderror
                         </div>
 
@@ -94,10 +95,29 @@
                             <textarea
                                 id="descripcion"
                                 name="descripcion"
-                                class="campo-input campo-textarea"
-                            >{{ old('descripcion', $partida->descripcion) }}</textarea>
+                                class="campo-input campo-textarea">{{ old('descripcion', $partida->descripcion) }}</textarea>
                             @error('descripcion')
-                                <span class="campo-error">{{ $message }}</span>
+                            <span class="campo-error">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        {{-- Imagen de portada --}}
+                        <div class="campo">
+                            <label for="imagen" class="campo-etiqueta">Imagen de portada</label>
+
+                            {{-- Si ya tiene imagen la mostramos --}}
+                            @if ($partida->imagen)
+                            <img src="{{ asset('storage/' . $partida->imagen) }}" class="campo-imagen-preview">
+                            @endif
+
+                            <input
+                                id="imagen"
+                                type="file"
+                                name="imagen"
+                                class="campo-input campo-file"
+                                accept="image/*">
+                            @error('imagen')
+                            <span class="campo-error">{{ $message }}</span>
                             @enderror
                         </div>
 
@@ -121,4 +141,5 @@
     </div>{{-- fin .panel --}}
 
 </body>
+
 </html>

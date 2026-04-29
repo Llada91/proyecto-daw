@@ -49,6 +49,11 @@
         ============================================= --}}
         <main class="panel-contenido">
 
+            {{-- Imagen grande del personaje si existe --}}
+            @if ($personaje->imagen)
+                <img src="{{ asset('storage/' . $personaje->imagen) }}" class="show-imagen">
+            @endif
+
             {{-- Cabecera con nombre y acciones --}}
             <div class="dashboard-cabecera">
                 <div>

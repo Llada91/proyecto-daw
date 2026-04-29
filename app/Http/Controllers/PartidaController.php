@@ -10,10 +10,8 @@ class PartidaController extends Controller
     // Muestra la lista de partidas del usuario
     public function index()
     {
-        // Partidas donde el usuario es director
         $partidasComoDirector = Partida::where('creador_id', auth()->id())->get();
 
-        // Partidas donde el usuario es jugador (tiene un personaje incluido)
         $partidasComoJugador = Partida::whereHas('personajes', function ($query) {
             $query->where('usuario_id', auth()->id());
         })->where('creador_id', '!=', auth()->id())->get();
@@ -30,20 +28,26 @@ class PartidaController extends Controller
     // Guarda la nueva partida en la base de datos
     public function store(Request $request)
     {
-        // Validamos los datos del formulario
         $request->validate([
             'nombre'      => 'required|max:255',
             'descripcion' => 'nullable',
+            // image valida que sea una imagen, max 2MB
+            'imagen'      => 'nullable|image|max:2048',
         ]);
 
-        // Creamos la partida con el usuario actual como director
+        // Si se subió una imagen la guardamos en storage/app/public/partidas
+        $rutaImagen = null;
+        if ($request->hasFile('imagen')) {
+            $rutaImagen = $request->file('imagen')->store('partidas', 'public');
+        }
+
         Partida::create([
             'nombre'      => $request->nombre,
             'descripcion' => $request->descripcion,
+            'imagen'      => $rutaImagen,
             'creador_id'  => auth()->id(),
         ]);
 
-        // Redirigimos al listado de partidas
         return redirect()->route('partidas.index');
     }
 
@@ -56,7 +60,6 @@ class PartidaController extends Controller
     // Muestra el formulario para editar una partida
     public function edit(Partida $partida)
     {
-        // Solo el director puede editar su partida
         if (auth()->id() !== $partida->creador_id) {
             return redirect()->route('partidas.index');
         }
@@ -67,21 +70,28 @@ class PartidaController extends Controller
     // Guarda los cambios de la partida
     public function update(Request $request, Partida $partida)
     {
-        // Solo el director puede editar su partida
         if (auth()->id() !== $partida->creador_id) {
             return redirect()->route('partidas.index');
         }
 
-        // Validamos los datos del formulario
         $request->validate([
             'nombre'      => 'required|max:255',
             'descripcion' => 'nullable',
+            'imagen'      => 'nullable|image|max:2048',
         ]);
 
-        $partida->update([
-            'nombre'      => $request->nombre,
-            'descripcion' => $request->descripcion,
-        ]);
+        // Si se subió una imagen nueva la guardamos y borramos la anterior
+        if ($request->hasFile('imagen')) {
+            // Borramos la imagen anterior si existía
+            if ($partida->imagen) {
+                \Storage::disk('public')->delete($partida->imagen);
+            }
+            $partida->imagen = $request->file('imagen')->store('partidas', 'public');
+        }
+
+        $partida->nombre      = $request->nombre;
+        $partida->descripcion = $request->descripcion;
+        $partida->save();
 
         return redirect()->route('partidas.index');
     }
@@ -89,9 +99,13 @@ class PartidaController extends Controller
     // Elimina una partida
     public function destroy(Partida $partida)
     {
-        // Solo el director puede eliminar su partida
         if (auth()->id() !== $partida->creador_id) {
             return redirect()->route('partidas.index');
+        }
+
+        // Borramos la imagen si existía
+        if ($partida->imagen) {
+            \Storage::disk('public')->delete($partida->imagen);
         }
 
         $partida->delete();

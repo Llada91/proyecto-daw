@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi perfil — Forja de Mundos</title>
     @vite(['resources/css/app.css'])
 </head>
+
 <body>
 
     <div class="panel">
@@ -23,10 +25,10 @@
                 <a href="{{ route('dashboard') }}" class="sidebar-enlace">
                     🏠 Dashboard
                 </a>
-                <a href="#" class="sidebar-enlace">
+                <a href="{{ route('partidas.index') }}" class="sidebar-enlace">
                     ⚔️ Mis partidas
                 </a>
-                <a href="#" class="sidebar-enlace">
+                <a href="{{ route('personajes.index') }}" class="sidebar-enlace">
                     📜 Mis personajes
                 </a>
                 <a href="{{ route('profile.edit') }}" class="sidebar-enlace activo">
@@ -85,4 +87,5 @@
     </div>{{-- fin .panel --}}
 
 </body>
+
 </html>
