@@ -65,21 +65,16 @@
             </div>
 
 
-            {{-- ---- MIS PARTIDAS ---- --}}
+{{-- ---- MIS PARTIDAS ---- --}}
 <section class="dashboard-seccion">
-
     <h2 class="dashboard-seccion-titulo">Mis partidas</h2>
-
     <div class="grid">
-
         @foreach ($ultimasPartidas as $partida)
             <div class="tarjeta">
                 @if ($partida->imagen)
                     <img src="{{ asset('storage/' . $partida->imagen) }}" class="tarjeta-imagen">
                 @else
-                    <div class="tarjeta-imagen-placeholder">
-                        {{ $partida->creador_id === auth()->id() ? '⚔️' : '🛡️' }}
-                    </div>
+                    <img src="{{ asset('img/game-default.png') }}" class="tarjeta-imagen">
                 @endif
                 <div class="tarjeta-cabecera">
                     @if ($partida->creador_id === auth()->id())

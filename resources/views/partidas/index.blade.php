@@ -77,7 +77,7 @@
                                 @if ($partida->imagen)
                                     <img src="{{ asset('storage/' . $partida->imagen) }}" class="tarjeta-imagen">
                                 @else
-                                    <div class="tarjeta-imagen-placeholder">⚔️</div>
+                                    <img src="{{ asset('img/game-default.png') }}" class="tarjeta-imagen">
                                 @endif
 
                                 <div class="tarjeta-cabecera">

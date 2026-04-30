@@ -103,19 +103,18 @@
                         </div>
 
                         {{-- Imagen de portada --}}
-<div class="campo">
-    <label for="imagen" class="campo-etiqueta">Imagen de portada</label>
-    <input
-        id="imagen"
-        type="file"
-        name="imagen"
-        class="campo-input campo-file"
-        accept="image/*"
-    >
-    @error('imagen')
-        <span class="campo-error">{{ $message }}</span>
-    @enderror
-</div>
+                        <div class="campo">
+                            <label for="imagen" class="campo-etiqueta">Imagen de portada</label>
+                            <input
+                                id="imagen"
+                                type="file"
+                                name="imagen"
+                                class="campo-input campo-file"
+                                accept="image/*">
+                            @error('imagen')
+                            <span class="campo-error">{{ $message }}</span>
+                            @enderror
+                        </div>
 
                         {{-- Botones --}}
                         <div class="tarjeta-acciones">

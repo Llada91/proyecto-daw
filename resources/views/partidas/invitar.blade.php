@@ -81,7 +81,7 @@
                         @if ($personaje->imagen)
                         <img src="{{ asset('storage/' . $personaje->imagen) }}" class="tarjeta-imagen">
                         @else
-                        <div class="tarjeta-imagen-placeholder">🧙</div>
+                        <img src="{{ asset('img/pj-default.png') }}" class="tarjeta-imagen">
                         @endif
 
                         <div class="tarjeta-cabecera">
@@ -136,7 +136,7 @@
                         @if ($personaje->imagen)
                         <img src="{{ asset('storage/' . $personaje->imagen) }}" class="tarjeta-imagen">
                         @else
-                        <div class="tarjeta-imagen-placeholder">🧙</div>
+                        <img src="{{ asset('img/pj-default.png') }}" class="tarjeta-imagen">
                         @endif
 
                         <div class="tarjeta-cabecera">
