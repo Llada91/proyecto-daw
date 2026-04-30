@@ -1413,3 +1413,115 @@ ul {
     color: var(--morado);
     font-style: normal;
 }
+
+/* ================================================
+   PANEL DE ADMINISTRACIÓN
+================================================ */
+
+/* Número grande de estadística */
+.admin-stat {
+    font-family: var(--fuente-titulo);
+    font-size: 3rem;
+    color: var(--morado);
+    line-height: 1;
+    margin-top: 0.5rem;
+}
+
+/* Tabla de usuarios y partidas */
+.admin-tabla {
+    background: var(--oscuro);
+    border: 1px solid var(--borde);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+/* Cabecera de la tabla */
+.admin-tabla-cabecera {
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr 1fr 1fr;
+    padding: 0.8rem 1.2rem;
+    background: rgba(123, 63, 228, 0.1);
+    border-bottom: 1px solid var(--borde);
+    font-family: var(--fuente-titulo);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gris);
+}
+
+/* Fila de la tabla */
+.admin-tabla-fila {
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr 1fr 1fr;
+    padding: 0.9rem 1.2rem;
+    border-bottom: 1px solid var(--borde);
+    align-items: center;
+    font-size: 0.9rem;
+    color: var(--blanco);
+    transition: background 0.2s;
+}
+
+.admin-tabla-fila:last-child {
+    border-bottom: none;
+}
+
+.admin-tabla-fila:hover {
+    background: rgba(123, 63, 228, 0.05);
+}
+
+.admin-tabla-nombre {
+    font-family: var(--fuente-titulo);
+    font-size: 0.85rem;
+    color: var(--blanco);
+}
+
+.admin-tabla-email {
+    color: var(--gris);
+    font-size: 0.85rem;
+}
+
+.admin-tabla-fecha {
+    color: var(--gris);
+    font-size: 0.82rem;
+    font-style: italic;
+}
+
+.admin-tabla-yo {
+    font-size: 0.75rem;
+    color: var(--gris);
+    font-style: italic;
+}
+
+/* Personajes desplegables en el panel admin */
+.admin-tabla-personajes {
+    border-bottom: 1px solid var(--borde);
+    background: rgba(123, 63, 228, 0.03);
+}
+
+.admin-tabla-personajes-titulo {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.82rem;
+    color: var(--gris);
+    cursor: pointer;
+    font-style: italic;
+    list-style: none;
+    transition: color 0.2s;
+}
+
+.admin-tabla-personajes-titulo:hover {
+    color: var(--morado);
+}
+
+.admin-tabla-personajes-lista {
+    padding: 0.5rem 0;
+}
+
+.admin-tabla-personaje-fila {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 2fr;
+    padding: 0.6rem 2rem;
+    font-size: 0.85rem;
+    color: var(--blanco);
+    border-top: 1px solid var(--borde);
+    align-items: center;
+}

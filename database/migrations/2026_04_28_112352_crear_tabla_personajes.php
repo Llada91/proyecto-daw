@@ -19,6 +19,9 @@ return new class extends Migration
             // nombre, raza, clase, nivel, fuerza, etc.
             $tabla->json('datos')->nullable();
 
+            // Añade una imagen
+            $tabla->string('imagen')->nullable();
+
             // Crea automáticamente created_at y updated_at
             $tabla->timestamps();
         });

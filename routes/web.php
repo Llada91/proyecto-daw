@@ -40,6 +40,14 @@ Route::middleware('auth')->group(function () {
     // Rutas de personajes
     Route::resource('personajes', PersonajeController::class);
 
+    // Rutas de administración — solo para usuarios con rol admin
+    Route::middleware('es.admin')->group(function () {
+        Route::get('/admin',                              [App\Http\Controllers\AdminController::class, 'index'])->name('admin.index');
+        Route::delete('/admin/usuarios/{user}',           [App\Http\Controllers\AdminController::class, 'eliminarUsuario'])->name('admin.eliminarUsuario');
+        Route::delete('/admin/partidas/{partida}',        [App\Http\Controllers\AdminController::class, 'eliminarPartida'])->name('admin.eliminarPartida');
+        Route::delete('/admin/personajes/{personaje}',    [App\Http\Controllers\AdminController::class, 'eliminarPersonaje'])->name('admin.eliminarPersonaje');
+    });
+
 });
 
 require __DIR__ . '/auth.php';

@@ -18,6 +18,9 @@ return new class extends Migration
             // Descripción — nullable significa que puede estar vacío
             $tabla->text('descripcion')->nullable();
 
+            // Añade una imagen
+                $tabla->string('imagen')->nullable();
+
             // El usuario que creó la partida (el director)
             // constrained('users') crea la clave foránea hacia la tabla users
             $tabla->foreignId('creador_id')->constrained('users');
