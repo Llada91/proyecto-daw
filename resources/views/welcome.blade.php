@@ -83,8 +83,7 @@
             </div>
 
         </section>
-        </div>
-        
+
     </main>
 
     {{-- PIE DE PÁGINA --}}
