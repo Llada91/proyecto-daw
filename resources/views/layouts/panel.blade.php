@@ -15,9 +15,9 @@
         ============================================= --}}
         <aside class="sidebar">
 
-            <a href="/" class="sidebar-logo">
-                ⚔️ Forja de <span>Mundos</span>
-            </a>
+<a href="{{ route('dashboard') }}" class="sidebar-logo">
+    ⚔️ Forja de <span>Mundos</span>
+</a>
 
             <nav class="sidebar-nav">
                 <a href="{{ route('dashboard') }}"

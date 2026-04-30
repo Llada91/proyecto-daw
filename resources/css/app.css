@@ -838,13 +838,17 @@ ul {
     .sidebar {
         position: static;
         height: auto;
-        flex-direction: row;
-        flex-wrap: wrap;
-        padding: 1rem 1.5rem;
-        gap: 1rem;
-        box-shadow: none;
+        flex-direction: column;
+        padding: 0.8rem 1rem;
+        gap: 0;
         border-right: none;
         border-bottom: 1px solid var(--borde);
+        box-shadow: none;
+    }
+
+    .sidebar-logo {
+        margin-bottom: 0.8rem;
+        font-size: 0.95rem;
     }
 
     .sidebar-logo::after {
@@ -854,22 +858,76 @@ ul {
     .sidebar-nav {
         flex-direction: row;
         flex-wrap: wrap;
-        flex: none;
+        gap: 0.3rem;
         margin-top: 0;
+        margin-bottom: 0.8rem;
+    }
+
+    .sidebar-enlace {
+        padding: 0.4rem 0.7rem;
+        font-size: 0.78rem;
+        border-left: none;
+        border-radius: 4px;
+        border: 1px solid var(--borde);
+    }
+
+    .sidebar-enlace.activo {
+        border-color: var(--morado);
+        border-left: 1px solid var(--morado);
     }
 
     .sidebar-logout {
         margin-top: 0;
-        padding-top: 0;
-        border-top: none;
+        padding-top: 0.8rem;
+        border-top: 1px solid var(--borde);
+    }
+
+    .sidebar-logout .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.68rem;
     }
 
     .panel-contenido {
-        padding: 1.5rem;
+        padding: 1.2rem;
+    }
+
+    .dashboard-cabecera {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .dashboard-acciones {
+        width: 100%;
+    }
+
+    .dashboard-acciones .btn {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 0.4rem;
     }
 
     .grid {
         grid-template-columns: 1fr;
+    }
+
+    /* Sala de juego en móvil — panel derecho debajo */
+    .sala-cuerpo {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr auto;
+    }
+
+    .sala-panel {
+        border-top: 1px solid var(--borde);
+        border-right: none;
+        max-height: 200px;
+    }
+
+    /* Tablas admin en móvil */
+    .admin-tabla-cabecera,
+    .admin-tabla-fila,
+    .admin-tabla-personaje-fila {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.3rem;
     }
 }
 
