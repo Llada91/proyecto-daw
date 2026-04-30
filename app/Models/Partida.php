@@ -26,4 +26,10 @@ class Partida extends Model
     {
         return $this->belongsToMany(Personaje::class, 'incluir_personaje');
     }
+
+    // Una partida tiene muchos mensajes
+public function mensajes()
+{
+    return $this->hasMany(Mensaje::class);
+}
 }

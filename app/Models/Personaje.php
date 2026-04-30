@@ -30,4 +30,11 @@ class Personaje extends Model
     {
         return $this->belongsToMany(Partida::class, 'incluir_personaje');
     }
+
+// Un personaje tiene muchos mensajes
+public function mensajes()
+{
+    return $this->hasMany(Mensaje::class);
+}
+
 }

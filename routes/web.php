@@ -24,22 +24,22 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Rutas de partidas
-    // Genera: index, create, store, show, edit, update, destroy
     Route::resource('partidas', PartidaController::class);
 
-    // Rutas de partidas
-    Route::resource('partidas', PartidaController::class);
+    // Invitar y quitar personajes de una partida
+    Route::get('partidas/{partida}/invitar',    [PartidaController::class, 'invitar'])->name('partidas.invitar');
+    Route::post('partidas/{partida}/invitar',   [PartidaController::class, 'agregarPersonaje'])->name('partidas.agregarPersonaje');
+    Route::delete('partidas/{partida}/invitar', [PartidaController::class, 'quitarPersonaje'])->name('partidas.quitarPersonaje');
 
-    // Invitar personajes a una partida
-    Route::get('partidas/{partida}/invitar',  [PartidaController::class, 'invitar'])->name('partidas.invitar');
-    Route::post('partidas/{partida}/invitar', [PartidaController::class, 'agregarPersonaje'])->name('partidas.agregarPersonaje');
+    // Rutas de la sala de juego
+    Route::get('partidas/{partida}/sala',           [App\Http\Controllers\SalaController::class, 'show'])->name('sala.show');
+    Route::post('partidas/{partida}/sala/mensaje',  [App\Http\Controllers\SalaController::class, 'enviarMensaje'])->name('sala.mensaje');
+    Route::post('partidas/{partida}/sala/dado',     [App\Http\Controllers\SalaController::class, 'tirarDado'])->name('sala.dado');
+    Route::post('partidas/{partida}/sala/personaje',[App\Http\Controllers\SalaController::class, 'elegirPersonaje'])->name('sala.personaje');
 
     // Rutas de personajes
-    // Genera: index, create, store, show, edit, update, destroy
     Route::resource('personajes', PersonajeController::class);
 
-    Route::delete('partidas/{partida}/invitar', [PartidaController::class, 'quitarPersonaje'])
-        ->name('partidas.quitarPersonaje');
 });
 
 require __DIR__ . '/auth.php';

@@ -64,10 +64,15 @@
                     </p>
                 </div>
 
-                {{-- Solo el director ve los botones --}}
-                @if (auth()->id() === $partida->creador_id)
-                    <div class="dashboard-acciones">
-                        {{-- Botón para invitar personajes --}}
+                <div class="dashboard-acciones">
+
+                    {{-- Botón para entrar en la sala — visible para todos --}}
+                    <a href="{{ route('sala.show', $partida) }}" class="btn btn-morado">
+                        ⚔️ Entrar en partida
+                    </a>
+
+                    {{-- Solo el director ve estos botones --}}
+                    @if (auth()->id() === $partida->creador_id)
                         <a href="{{ route('partidas.invitar', $partida) }}" class="btn btn-amarillo">
                             ➕ Invitar personajes
                         </a>
@@ -82,8 +87,9 @@
                                 Eliminar partida
                             </button>
                         </form>
-                    </div>
-                @endif
+                    @endif
+
+                </div>
             </div>
 
 
@@ -111,7 +117,6 @@
                         @foreach ($partida->personajes as $personaje)
                             <div class="tarjeta">
 
-                                {{-- Imagen del personaje si existe --}}
                                 @if ($personaje->imagen)
                                     <img src="{{ asset('storage/' . $personaje->imagen) }}" class="tarjeta-imagen">
                                 @else
@@ -133,6 +138,7 @@
                                 <p class="tarjeta-texto">
                                     Jugador: {{ $personaje->usuario->name }}
                                 </p>
+
                             </div>
                         @endforeach
                     </div>
