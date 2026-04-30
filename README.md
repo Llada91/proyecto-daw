@@ -1,66 +1,111 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Forja de Mundos
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Plataforma web para gestionar partidas de rol de mesa. Permite a los jugadores crear personajes, unirse a partidas y comunicarse en tiempo real a través de una sala de juego con chat y tiradas de dados.
 
-## About Laravel
+## Tecnologías
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Backend:** Laravel 11 (PHP 8.2+)
+- **Frontend:** Blade + CSS propio + Vite
+- **Autenticación:** Laravel Breeze
+- **Base de datos:** MySQL / SQLite
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Requisitos
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP 8.2 o superior
+- Composer
+- Node.js y npm
+- MySQL o SQLite
 
-## Learning Laravel
+## Instalación
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```bash
+# 1. Clonar el repositorio
+git clone <url-del-repo>
+cd proyecto
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+# 2. Instalar dependencias
+composer install
+npm install
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+# 3. Configurar entorno
+cp .env.example .env
+php artisan key:generate
 
-## Laravel Sponsors
+# 4. Configurar la base de datos en .env
+# DB_CONNECTION=mysql
+# DB_DATABASE=proyecto_daw
+# DB_USERNAME=...
+# DB_PASSWORD=...
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+# 5. Ejecutar migraciones
+php artisan migrate
 
-### Premium Partners
+# 6. Crear enlace de almacenamiento (para imágenes)
+php artisan storage:link
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+# 7. Compilar assets y arrancar
+npm run dev
+php artisan serve
+```
 
-## Contributing
+## Funcionalidades
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Usuarios
+- Registro, login y verificación de email
+- Edición de perfil y eliminación de cuenta
+- Dos roles: **usuario** y **admin**
 
-## Code of Conduct
+### Partidas
+- Crear, editar y eliminar partidas (solo el creador)
+- Cada partida tiene un director (creador) y jugadores con sus personajes
+- El director puede invitar o expulsar personajes de la partida
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Personajes
+- Cada usuario crea sus propias fichas de personaje
+- Imagen del personaje (almacenada en `storage/app/public/personajes`)
+- Los personajes se pueden asignar a una o varias partidas
 
-## Security Vulnerabilities
+### Sala de juego
+- Acceso restringido: solo el director y los jugadores con personaje en la partida
+- Chat de mensajes en tiempo real (con recarga)
+- Tiradas de dados: d4, d6, d8, d10, d12, d20, d100
+- Selección de personaje activo cuando el jugador tiene varios en la misma partida
+- Historial de los últimos 50 mensajes
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Panel de administración
+- Acceso exclusivo para usuarios con rol `admin`
+- Listado y eliminación de usuarios, partidas y personajes
 
-## License
+## Estructura de la ficha de personaje
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+El campo `datos` de la tabla `personajes` es un JSON con los siguientes campos:
+
+| Campo | Tipo | Descripción |
+|-------|------|-------------|
+| `nombre` | string | Nombre del personaje (obligatorio) |
+| `raza` | string | Raza (Humano, Elfo, Enano...) |
+| `clase` | string | Clase (Guerrero, Mago, Pícaro...) |
+| `nivel` | integer | Nivel del personaje (1-20) |
+| `trasfondo` | string | Trasfondo (Noble, Soldado, Sabio...) |
+| `puntos_vida` | integer | Puntos de vida máximos |
+| `clase_armadura` | integer | Clase de armadura |
+| `descripcion` | string | Historia del personaje |
+| `fuerza` | integer | Característica Fuerza (1-20) |
+| `destreza` | integer | Característica Destreza (1-20) |
+| `constitucion` | integer | Característica Constitución (1-20) |
+| `inteligencia` | integer | Característica Inteligencia (1-20) |
+| `sabiduria` | integer | Característica Sabiduría (1-20) |
+| `carisma` | integer | Característica Carisma (1-20) |
+
+## Roles y permisos
+
+| Acción | Usuario | Admin |
+|--------|---------|-------|
+| Crear/editar/eliminar sus partidas | ✓ | ✓ |
+| Crear/editar/eliminar sus personajes | ✓ | ✓ |
+| Acceder a la sala de juego | ✓ | ✓ |
+| Eliminar cualquier usuario | — | ✓ |
+| Eliminar cualquier partida | — | ✓ |
+| Eliminar cualquier personaje | — | ✓ |
+
+Para asignar el rol admin, cambiar el campo `rol` a `admin` directamente en la base de datos.
