@@ -51,8 +51,16 @@ class PartidaController extends Controller
     }
 
     // Muestra el detalle de una partida
+    // Solo pueden verla el director y los jugadores con personaje en ella
     public function show(Partida $partida)
     {
+        $esDirector = auth()->id() === $partida->creador_id;
+        $esJugador  = $partida->personajes->where('usuario_id', auth()->id())->count() > 0;
+
+        if (!$esDirector && !$esJugador) {
+            return redirect()->route('partidas.index');
+        }
+
         return view('partidas.show', compact('partida'));
     }
 
@@ -112,12 +120,10 @@ class PartidaController extends Controller
     // Muestra el listado de personajes disponibles para invitar
     public function invitar(Partida $partida)
     {
-        // Solo el director puede invitar
         if (auth()->id() !== $partida->creador_id) {
             return redirect()->route('partidas.show', $partida);
         }
 
-        // Personajes que NO están ya en la partida
         $personajesDisponibles = Personaje::whereNotIn(
             'id',
             $partida->personajes->pluck('id')
@@ -129,12 +135,10 @@ class PartidaController extends Controller
     // Añade el personaje a la partida
     public function agregarPersonaje(Request $request, Partida $partida)
     {
-        // Solo el director puede invitar
         if (auth()->id() !== $partida->creador_id) {
             return redirect()->route('partidas.show', $partida);
         }
 
-        // Añadimos el personaje a la tabla incluir_personaje
         $partida->personajes()->attach($request->personaje_id);
 
         return redirect()->route('partidas.show', $partida);
@@ -147,7 +151,6 @@ class PartidaController extends Controller
             return redirect()->route('partidas.show', $partida);
         }
 
-        // Eliminamos el personaje de la tabla incluir_personaje
         $partida->personajes()->detach($request->personaje_id);
 
         return redirect()->route('partidas.invitar', $partida);

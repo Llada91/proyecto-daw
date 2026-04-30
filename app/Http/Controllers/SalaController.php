@@ -11,9 +11,16 @@ class SalaController extends Controller
     // Muestra la sala de juego
     public function show(Partida $partida)
     {
+        // Comprobamos si el usuario puede acceder a esta partida
+        $esDirector = auth()->id() === $partida->creador_id;
+        $esJugador  = $partida->personajes->where('usuario_id', auth()->id())->count() > 0;
+
+        if (!$esDirector && !$esJugador) {
+            return redirect()->route('partidas.index');
+        }
+
         // Mis personajes en esta partida
-        $misPersonajes = $partida->personajes
-            ->where('usuario_id', auth()->id());
+        $misPersonajes = $partida->personajes->where('usuario_id', auth()->id());
 
         // Personaje activo — el guardado en sesión o el primero por defecto
         $personajeIdActivo = session('personaje_activo_' . $partida->id);
@@ -51,17 +58,14 @@ class SalaController extends Controller
             'personaje_id' => 'required|integer',
         ]);
 
-        // Comprobamos que el personaje pertenece al usuario y está en la partida
         $personaje = $partida->personajes
             ->where('usuario_id', auth()->id())
             ->firstWhere('id', $request->personaje_id);
 
-        // Si el personaje no es suyo no hacemos nada
         if (!$personaje) {
             return redirect()->route('sala.show', $partida);
         }
 
-        // Guardamos el personaje activo en la sesión
         session(['personaje_activo_' . $partida->id => $request->personaje_id]);
 
         return redirect()->route('sala.show', $partida);
