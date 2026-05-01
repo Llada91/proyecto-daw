@@ -12,7 +12,7 @@
         <div class="auth-tarjeta">
 
             <a href="/" class="auth-logo">
-                ⚔️ Forja de <span>Mundos</span>
+                Forja de <span>Mundos</span>
             </a>
 
             @if (session('status') == 'verification-link-sent')

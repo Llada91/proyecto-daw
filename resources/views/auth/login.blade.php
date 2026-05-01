@@ -13,7 +13,7 @@
 
             {{-- Logo --}}
             <a href="/" class="auth-logo">
-                ⚔️ Forja de <span>Mundos</span>
+                Forja de <span>Mundos</span>
             </a>
 
             {{-- Mensajes de error generales --}}

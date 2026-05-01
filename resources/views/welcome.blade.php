@@ -14,7 +14,7 @@
     <header class="cabecera">
 
         <a href="/" class="cabecera-logo">
-            ⚔️ Forja de <span>Mundos</span>
+            Forja de <span>Mundos</span>
         </a>
 
         <nav class="cabecera-nav">
@@ -89,7 +89,7 @@
     {{-- PIE DE PÁGINA --}}
     <footer class="pie">
 
-        <div class="pie-logo">⚔️ Forja de <span>Mundos</span></div>
+        <div class="pie-logo">Forja de <span>Mundos</span></div>
 
         <p class="pie-texto">Proyecto académico · 2º DAW · Cristian Llada Álvarez</p>
 

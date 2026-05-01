@@ -16,7 +16,7 @@
         <aside class="sidebar">
 
 <a href="{{ route('dashboard') }}" class="sidebar-logo">
-    ⚔️ Forja de <span>Mundos</span>
+    Forja de <span>Mundos</span>
 </a>
 
             <nav class="sidebar-nav">
