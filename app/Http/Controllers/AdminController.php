@@ -47,6 +47,12 @@ class AdminController extends Controller
     // Elimina una partida
     public function eliminarPartida(Partida $partida)
     {
+        // Primero eliminamos las relaciones de la tabla incluir_personaje
+        $partida->personajes()->detach();
+
+        // Luego borramos los mensajes de la partida
+        $partida->mensajes()->delete();
+
         // Borramos la imagen si existía
         if ($partida->imagen) {
             \Storage::disk('public')->delete($partida->imagen);
